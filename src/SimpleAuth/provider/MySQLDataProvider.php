@@ -88,21 +88,27 @@ class MySQLDataProvider implements DataProvider{
             "logindate" => time(),
             "lastip" => null,
             "hash" => $hash,
-            "ip" => $player->getAddress(),
-            "cid" => $player->getClientId(),
-            "skinhash" => hash("md5", $player->getSkinData()),
             "pin" => null
         ];
-
-
-
+        if($player instanceof OfflinePlayer)
+        {
+	    $data["ip"] = "0.0.0.0";
+	    $data["cid"] = "0";
+	    $data["skinhash"] = "0";
+        }
+        else
+        {
+	    $data["ip"] = $player->getAddress();
+	    $data["cid"] = $player->getClientId();
+	    $data["skinhash"] = hash("md5", $player->getSkinData());
+        }
         $this->database->query("INSERT INTO simpleauth_players
 			(name, registerdate, ip, cid, skinhash, pin, logindate, lastip, hash)
 			VALUES
 			('" . $this->database->escape_string($name) . "', " . intval($data["registerdate"]) . ", '" . $this->database->escape_string($data["ip"]) . "', " . $data["cid"] . ", '" . $this->database->escape_string($data["skinhash"]) . "', " . intval($data["pin"]) . ", " . intval($data["logindate"]) . ", '', '" . $hash . "')");
 
-		return $data;
-	}
+	return $data;
+    }
 
     public function savePlayer(IPlayer $player, array $config) {
         $name = trim(strtolower($player->getName()));
