@@ -81,11 +81,20 @@ class SQLite3DataProvider implements DataProvider{
             "logindate" => time(),
             "lastip" => null,
             "hash" => $hash,
-            "ip" => $player->getAddress(),
-            "cid" => $player->getClientId(),
-            "skinhash" => hash("md5", $player->getSkinData()),
             "pin" => null
         ];
+	if($player instanceof OfflinePlayer)
+	{
+	    $data["ip"] = "0.0.0.0";
+	    $data["cid"] = "0";
+	    $data["skinhash"] = "0";
+	}
+	else
+	{
+	    $data["ip"] = $player->getAddress();
+	    $data["cid"] = $player->getClientId();
+	    $data["skinhash"] = hash("md5", $player->getSkinData());
+	}
         $prepare = $this->database->prepare("INSERT INTO players (name, registerdate, logindate, lastip, hash, ip, cid, skinhash, pin) VALUES (:name, :registerdate, :logindate, :lastip, :hash, :ip, :cid, :skinhash, :pin)");
         $prepare->bindValue(":name", $name, SQLITE3_TEXT);
         $prepare->bindValue(":registerdate", $data["registerdate"], SQLITE3_INTEGER);
