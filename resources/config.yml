@@ -5,14 +5,13 @@
 #Be aware that data is not automatically moved between data providers.
 dataProvider: yaml
 
-#For MySQL:
-#dataProviderSettings:
-# host: "127.0.0.1"
-# port: 3306
-# user: "user"
-# password: "password"
-# database: "databaseName"
-dataProviderSettings: []
+#For MySQL only. Ignore these settings if dataProvider is not mysql.
+dataProviderSettings:
+  host: "127.0.0.1"
+  port: 3306
+  user: "user"
+  password: "password"
+  database: "databaseName"
 
 #If enabled, existing logged-in accounts won't be kicked if a new player joins with the same name
 forceSingleSession: true
