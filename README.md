@@ -1,4 +1,4 @@
-# SimpleAuth 2.x
+# SimpleAuth 2.2.x
 
 By @Shoghicp
 
